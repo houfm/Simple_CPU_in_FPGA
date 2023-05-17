@@ -20,6 +20,10 @@ module ex_mem(
   reg [31:0] reg_result; 
   reg [31:0] reg_pc; 
 
+// ex_result_sel 就是对流水线执行阶段的结果进行选择。
+// 当（ex_result_sel == 2’h0）时，就选择 ALU 的运算结果；
+// 当（ex_result_sel == 2’h1）时，就会选择指令解码得到的立即数（其实就是对应 LUI 指令）；
+// 当（ex_result_sel == 2’h2）时，选择 PC 加 4 的值，也就是下一个 PC 的值。
   wire [31:0] resulet_w = (ex_result_sel == 2'h0) ? alu_result :
                           (ex_result_sel == 2'h1) ? id_ex_data_imm :
                           (ex_result_sel == 2'h2) ? (in_pc + 32'h4): 32'h0;
